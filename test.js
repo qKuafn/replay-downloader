@@ -17,11 +17,17 @@ if (!fs.existsSync(needlePath)) {
 const replayDownloader = require('.');
 let [id, savePath, ...fa] = process.argv.slice(2);
 
-const defaultPath = 'C:/Users/Owner/Downloads/replay-downloader-master (1)/replay-downloader-master'; //リプレイファイルを保存するフォルダのパス
+// osでユーザー名を自動取得
+const defaultPath = `c:/Users/${process.env.USERNAME}/Downloads/replay-downloader-ReplayFiles`; //リプレイファイルを保存するフォルダのパス
 type = 'replay'; //ファイルのタイプ(変更する必要なし)
 const save_name = `TournamentMatch_${id}`;
 
 const UpdatedbasePath = savePath || defaultPath;
+if (!fs.existsSync(UpdatedbasePath)) { // もしディレクトリがない場合作成
+  fs.mkdirSync(UpdatedbasePath, { recursive: true });
+  console.log(`ディレクトリ ${UpdatedbasePath} を作成しました`);
+}
+
 const SaveFilePath = UpdatedbasePath.endsWith('/') ? UpdatedbasePath : UpdatedbasePath + '/';
 
 let checkpoint = false;
