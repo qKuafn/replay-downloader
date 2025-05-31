@@ -4,7 +4,6 @@ chcp 65001 > nul
 :input_matchid
 echo.
 echo マッチIDを入力してください (入力必須)
-echo 注意：32桁の英数字で、「- 」は含まないでください
 set /p matchId=ここに入力... : 
 
 REM 入力チェック
@@ -14,6 +13,9 @@ IF "%matchId%"=="" (
     echo.
     goto input_matchid
 )
+
+REM ハイフンを全部消す
+set "matchId=%matchId:-=%"
 
 REM 入力チェック
 set "len=0"
@@ -25,6 +27,9 @@ if not "%tmp%"=="" (
     goto len_loop
 )
 
+REM デフォルト保存パス
+set "defaultSavePath=C:/Users/%USERNAME%/Downloads/replay-downloader-ReplayFiles"
+
 if not %len%==32 (
     echo.
     echo ⚠️ 入力は32文字である必要があります。現在の長さ：%len%
@@ -33,7 +38,7 @@ if not %len%==32 (
 )
 
 echo.
-echo 保存するフォルダパスを入力してください (⚠️ カスタム設定を行っていない場合、必ず入力してください)
+echo 保存するフォルダパスを入力してください (設定しない場合ダウンロードフォルダーに保存されます)
 echo 　　注意 ⚠️ ：パスは必ず「/ 」を使用し、「\ 」や「\\ 」は使わないでください
 echo 　　悪い例：C:\Users\User\...
 echo 　　(指定しない場合はEnterを押して進んでください)
@@ -43,7 +48,7 @@ echo.
 echo 以下の内容で出力します...
 echo マッチID: %matchId%
 if "%savePath%"=="" (
-    echo ファイルパス: 指定なし
+    echo ファイルパス: %defaultSavePath%
 ) else (
     echo ファイルパス: %savePath%
 )
