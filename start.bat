@@ -32,7 +32,7 @@ set "defaultSavePath=C:/Users/%USERNAME%/Downloads/replay-downloader-ReplayFiles
 
 if not %len%==32 (
     echo.
-    echo ⚠️ 入力は32文字である必要があります。現在の長さ：%len%
+    echo ⚠️ 入力は、「- 」を除くと32文字である必要があります。現在の長さ：%len%
     echo.
     goto input_matchid
 )
