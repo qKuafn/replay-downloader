@@ -11,7 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "needle": "^2.6.0"
+    "needle": "^2.9.1"
   },
   "devDependencies": {
     "@babel/core": "^7.15.8",
