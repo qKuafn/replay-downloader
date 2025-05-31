@@ -5,8 +5,8 @@
 @xNocken が作成したものに、コメントを追加 & run.batを作成
 
 ## 使用方法
-⭐️  [Node.js](https://nodejs.org/ja/download)のダウンロードが必要です 
-⭐️  このリポジトリ全体をダウンロード または、 [npm](https://npmjs.com/package/fortnite-replay-downloader) をダウンロード ➡️ このリポジトリの test.js と run.bat を入れる(置き換え)ことで使用可能です。(後者がおすすめ)
+-   [Node.js](https://nodejs.org/ja/download)のダウンロードが必要です 
+-   このリポジトリ全体をダウンロード または、 [npm](https://npmjs.com/package/fortnite-replay-downloader) をダウンロード ➡️ このリポジトリの test.js と run.bat を入れる(置き換え)ことで使用可能です。(後者がおすすめ)
 
 ### run.batを起動し、表示される内容を入力するとリプレイファイルがダウンロードされます
 
