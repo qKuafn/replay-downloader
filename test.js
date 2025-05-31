@@ -2,7 +2,15 @@ const fs = require('fs');
 
 const replayDownloader = require('.');
 
-const [type, id, ...fa] = process.argv.slice(2);
+let [id, savePath, ...fa] = process.argv.slice(2);
+
+// この下3行は変更可能
+const defaultPath = 'C:/Users/user名/Desktop/replay-downloader/Exports'; // 出力するファイルパスを事前に指定
+type = 'replay'; // リプレイとして出力 (基本は変更不要)
+const save_name = 'TournamentMatch_${id}.replay'; // 保存するファイル名を変更。${id} は入力したマッチID。｢.replay｣は消すと正常に動きません
+
+const UpdatedbasePath = savePath || defaultPath;
+const SaveFilePath = UpdatedbasePath.endsWith('/') ? UpdatedbasePath : UpdatedbasePath + '/';
 
 let checkpoint = false;
 let event = false;
@@ -28,15 +36,19 @@ if (type === 'replay') {
     checkpointCount: checkpoint ? 1000 : 0,
     maxConcurrentDownloads: 10,
     updateCallback: (data) => {
-      console.log('');
-      console.log('One');
-      console.log('header', `${data.header.current}/${data.header.max}`);
-      console.log('data', `${data.dataChunks.current}/${data.dataChunks.max}`);
-      console.log('events', `${data.eventChunks.current}/${data.eventChunks.max}`);
-      console.log('checkpoints', `${data.checkpointChunks.current}/${data.checkpointChunks.max}`);
+      // console.log('One');
+      // console.log('header', `${data.header.current}/${data.header.max}`);
+      process.stdout.write(`\rデータ取得中 : ${data.dataChunks.current}/${data.dataChunks.max}`);
+      if (data.dataChunks.current === data.dataChunks.max && data.dataChunks.max !== 0) {
+        process.stdout.write('\n\n');
+        console.log('データ取得が完了しました') ;
+      }
+      // console.log('events', `${data.eventChunks.current}/${data.eventChunks.max}`);
+      // console.log('checkpoints', `${data.checkpointChunks.current}/${data.checkpointChunks.max}`);
     },
   }).then((replay) => {
-    fs.writeFileSync(`${id}.replay`, replay);
+    fs.writeFileSync(`${SaveFilePath}${save_name}.replay`, replay);
+    console.log(`\n${SaveFilePath}${save_name}.replay にファイルを保存\n`) ;
   }).catch((err) => {
     console.log(err);
   });
