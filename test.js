@@ -1,13 +1,25 @@
 const fs = require('fs');
+const { execSync } = require('child_process');
+const path = require('path');
+
+const needlePath = path.join(__dirname, 'node_modules', 'needle');
+if (!fs.existsSync(needlePath)) {
+  console.log('needle モジュールが見つかりません。npm install needle を実行します...');
+  try {
+    execSync('npm install needle', { stdio: 'inherit' });
+    console.log('needle のインストールが完了しました。\n');
+  } catch (err) {
+    console.error('needle のインストールに失敗しました:', err);
+    process.exit(1);
+  }
+}
 
 const replayDownloader = require('.');
-
 let [id, savePath, ...fa] = process.argv.slice(2);
 
-// この下3行は変更可能
-const defaultPath = 'C:/Users/user名/Desktop/replay-downloader/Exports'; // 出力するファイルパスを事前に指定
-type = 'replay'; // リプレイとして出力 (基本は変更不要)
-const save_name = 'TournamentMatch_${id}.replay'; // 保存するファイル名を変更。${id} は入力したマッチID。｢.replay｣は消すと正常に動きません
+const defaultPath = 'C:/Users/Owner/Downloads/replay-downloader-master (1)/replay-downloader-master'; //リプレイファイルを保存するフォルダのパス
+type = 'replay'; //ファイルのタイプ(変更する必要なし)
+const save_name = `TournamentMatch_${id}`;
 
 const UpdatedbasePath = savePath || defaultPath;
 const SaveFilePath = UpdatedbasePath.endsWith('/') ? UpdatedbasePath : UpdatedbasePath + '/';
@@ -16,17 +28,9 @@ let checkpoint = false;
 let event = false;
 let packets = true;
 
-if (fa.includes('--checkpoint') || fa.includes('-c')) {
-  checkpoint = true;
-}
-
-if (fa.includes('--event') || fa.includes('-e')) {
-  event = true;
-}
-
-if (fa.includes('--no-data') || fa.includes('-nd')) {
-  packets = false;
-}
+if (fa.includes('--checkpoint') || fa.includes('-c')) checkpoint = true;
+if (fa.includes('--event') || fa.includes('-e')) event = true;
+if (fa.includes('--no-data') || fa.includes('-nd')) packets = false;
 
 if (type === 'replay') {
   replayDownloader.downloadReplay({
@@ -36,19 +40,15 @@ if (type === 'replay') {
     checkpointCount: checkpoint ? 1000 : 0,
     maxConcurrentDownloads: 10,
     updateCallback: (data) => {
-      // console.log('One');
-      // console.log('header', `${data.header.current}/${data.header.max}`);
       process.stdout.write(`\rデータ取得中 : ${data.dataChunks.current}/${data.dataChunks.max}`);
       if (data.dataChunks.current === data.dataChunks.max && data.dataChunks.max !== 0) {
         process.stdout.write('\n\n');
-        console.log('データ取得が完了しました') ;
+        console.log('データ取得が完了しました');
       }
-      // console.log('events', `${data.eventChunks.current}/${data.eventChunks.max}`);
-      // console.log('checkpoints', `${data.checkpointChunks.current}/${data.checkpointChunks.max}`);
     },
   }).then((replay) => {
     fs.writeFileSync(`${SaveFilePath}${save_name}.replay`, replay);
-    console.log(`\n${SaveFilePath}${save_name}.replay にファイルを保存\n`) ;
+    console.log(`\n${SaveFilePath}${save_name}.replay にファイルを保存\n`);
   }).catch((err) => {
     console.log(err);
   });
