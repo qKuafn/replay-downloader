@@ -17,7 +17,7 @@ if (!fs.existsSync(needlePath)) {
 const replayDownloader = require('.');
 let [id, savePath, ...fa] = process.argv.slice(2);
 
-// osでユーザー名を自動取得
+// ユーザー名を自動取得
 const defaultPath = `c:/Users/${process.env.USERNAME}/Downloads/replay-downloader-ReplayFiles`; //リプレイファイルを保存するフォルダのパス
 type = 'replay'; //ファイルのタイプ(変更する必要なし)
 const save_name = `TournamentMatch_${id}`;
