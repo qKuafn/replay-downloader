@@ -14,6 +14,7 @@ const defaultPath = 'C:/Users/user名/Desktop/replay-downloader/Exports';
 
 type = 'replay';
 // リプレイとして出力 (基本は変更不要)
+
 const save_name = 'TournamentMatch_${id}.replay';
 // 保存するファイル名を変更。${id} は入力したマッチID。｢.replay｣は消すと正常に動きません
 ```
