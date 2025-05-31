@@ -20,6 +20,7 @@ let [id, savePath, ...fa] = process.argv.slice(2);
 // ユーザー名を自動取得
 const defaultPath = `c:/Users/${process.env.USERNAME}/Downloads/replay-downloader-ReplayFiles`; //リプレイファイルを保存するフォルダのパス
 type = 'replay'; //ファイルのタイプ(変更する必要なし)
+id = id || 'f9c78808e8f446a496e10f3e7f16787a'; // 意味なし
 const save_name = `TournamentMatch_${id}`;
 
 const UpdatedbasePath = savePath || defaultPath;
@@ -50,11 +51,12 @@ if (type === 'replay') {
       if (data.dataChunks.current === data.dataChunks.max && data.dataChunks.max !== 0) {
         process.stdout.write('\n\n');
         console.log('データ取得が完了しました');
+        console.log('ファイルを保存中...');
       }
     },
   }).then((replay) => {
     fs.writeFileSync(`${SaveFilePath}${save_name}.replay`, replay);
-    console.log(`\n${SaveFilePath}${save_name}.replay にファイルを保存\n`);
+    console.log(`\n${SaveFilePath}${save_name}.replay にファイルを保存`);
   }).catch((err) => {
     console.log(err);
   });
