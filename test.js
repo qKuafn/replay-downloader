@@ -20,7 +20,7 @@ let [id, savePath, ...fa] = process.argv.slice(2);
 // ユーザー名を自動取得
 const defaultPath = `c:/Users/${process.env.USERNAME}/Downloads/replay-downloader-ReplayFiles`; //リプレイファイルを保存するフォルダのパス
 type = 'replay'; //ファイルのタイプ(変更する必要なし)
-id = id || 'f9c78808e8f446a496e10f3e7f16787a'; // 意味なし
+id = id || 'f9c78808e8f446a496e10f3e7f16787a'; // 基本的に意味なし
 const save_name = `TournamentMatch_${id}`;
 
 const UpdatedbasePath = savePath || defaultPath;
@@ -43,7 +43,7 @@ if (type === 'replay') {
   replayDownloader.downloadReplay({
     matchId: id,
     eventCount: event ? 1000 : 0,
-    dataCount: packets ? 1000 : 0,
+    dataCount: packets ? 1000 : 0, // データの最大数。(10でも問題なく見れます)
     checkpointCount: checkpoint ? 1000 : 0,
     maxConcurrentDownloads: 10,
     updateCallback: (data) => {
